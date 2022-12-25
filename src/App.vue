@@ -24,6 +24,8 @@
             :todo="todo"
             :key="todo.id"
             @deleteItem="deleteItemTodo"
+            @updateItem="updateItemTodo"
+            @completed="completedTask"
           />
       </ul>
     </div>
@@ -64,11 +66,27 @@ export default defineComponent({
       state.todos.splice(state.todos.findIndex(todo => todo.id === id), 1);
     }
 
+    const updateItemTodo = (id: number | string, textUpdate: string) => {
+      state.todos = state.todos.map(todo => todo.id === id ? {
+        ...todo,
+        title: textUpdate
+      } : todo)
+    }
+
+    const completedTask = (id: number | string) => {
+      state.todos = state.todos.map(todo => todo.id === id ? {
+        ...todo,
+        completed: !todo.completed
+      } : todo)
+    }
+
     return {
       ...toRefs(state),
       addTodo,
       inputTodoRef,
-      deleteItemTodo
+      deleteItemTodo,
+      updateItemTodo,
+      completedTask
     }
   }
 })
